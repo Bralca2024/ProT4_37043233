@@ -89,19 +89,47 @@ class BooksController {
   async updateBook(req, res) {
     try {
       const bookId = req.params.id;
+
       const book = req.body;
+
+      if (!book.titulo || !book.autor || !book.categoria || !book.año_publicacion || !book.isbn) {
+        return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
+      }
+
+      const yearPublicationRegex = /^\d{4}-\d{2}-\d{2}$/;
+      if (!yearPublicationRegex.test(book.año_publicacion)) {
+        return res.status(400).json({ message: 'El formato de año_publicacion debe ser YYYY-MM-DD.' });
+      }
+
+      const [existingBookCheck] = await pool.query(
+        'SELECT * FROM libros WHERE id = ?',
+        [bookId]
+      );
+
+      if (existingBookCheck.length === 0) {
+        return res.status(404).json({ message: 'El libro con el ID que ingresó no existe.' });
+      }
+
+      const [duplicateISBNCheck] = await pool.query(
+        'SELECT * FROM libros WHERE isbn = ? AND id <> ?',
+        [book.isbn, bookId]
+      );
+
+      if (duplicateISBNCheck.length > 0) {
+        return res.status(400).json({ message: 'El ISBN ya existe en la base de datos.' });
+      }
+
       await pool.query(
         `UPDATE libros SET titulo = ?, autor = ?, categoria = ?, año_publicacion = ?, isbn = ? WHERE id = ?`,
         [book.titulo, book.autor, book.categoria, book.año_publicacion, book.isbn, bookId]
       );
+
       res.json({ message: 'Libro actualizado correctamente.' });
     } catch (error) {
       console.error("Error al actualizar libro:", error);
       res.status(500).json({ error: "Error interno del servidor" });
     }
   }
-
-
 }
 
 export const book = new BooksController();
