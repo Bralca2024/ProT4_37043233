@@ -34,6 +34,26 @@ class BooksController {
   async addBook(req, res) {
     try {
       const book = req.body;
+
+      if (!book.titulo || !book.autor || !book.categoria || !book.año_publicacion || !book.isbn) {
+        return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
+      }
+
+      const yearPublicationRegex = /^\d{4}-\d{2}-\d{2}$/;
+
+      if (!yearPublicationRegex.test(book.año_publicacion)) {
+        return res.status(400).json({ message: 'El formato de año_publicacion debe ser YYYY-MM-DD.' });
+      }
+
+      const [existingBook] = await pool.query(
+        'SELECT * FROM libros WHERE isbn = ?',
+        [book.isbn]
+      );
+
+      if (existingBook.length > 0) {
+        return res.status(400).json({ message: 'El ISBN ya existe en la base de datos.' });
+      }
+
       const [result] = await pool.query(
         `INSERT INTO libros (titulo, autor, categoria, año_publicacion, isbn) VALUES (?, ?, ?, ?, ?)`,
         [book.titulo, book.autor, book.categoria, book.año_publicacion, book.isbn]
