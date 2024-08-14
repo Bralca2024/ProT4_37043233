@@ -1,10 +1,21 @@
 import { pool } from "./database.js";
 
 class BooksController {
+
   async getBookById(req, res) {
     try {
       const bookId = req.params.id;
+
+      if (!bookId) {
+        return res.status(400).json({ message: 'ID del libro es requerido' });
+      }
+
       const [result] = await pool.query('SELECT * FROM libros WHERE id = ?', [bookId]);
+
+      if (result.length === 0) {
+        return res.status(404).json({ message: 'Libro no encontrado' });
+      }
+
       res.status(200).json(result[0]);
     } catch (error) {
       res.status(500).json({ message: `${error.message}` });
