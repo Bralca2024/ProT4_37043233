@@ -16,7 +16,8 @@ npm i
 - `GET /books/:id`: Obtiene un libro específico por ID.
 - `POST /book`: Agrega un nuevo libro.
 - `PUT /update/:id`: Actualiza un libro existente por ID.
-- `DELETE /delete`: Elimina un libro por ISBN en el cuerpo de la solicitud.
+- `DELETE /delete`: Elimina un libro por ISBN.
+- Los últimos tres métodos (`POST`, `PUT` y `DELETE`) realizan sus funcionalidades a través del cuerpo de la solicitud.
 
 ## 4. Controlador de Libros (`BooksController`)
 - **getOne**: Obtiene un libro por ID, con validaciones para comprobar la existencia del mismo.
