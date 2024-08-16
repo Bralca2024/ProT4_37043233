@@ -2,7 +2,7 @@
 
 ## 1. Importaciones
 - Realiza las importaciones correspondientes de las dependencias que se utilizaron en la actividad, abriendo la terminal del editor de código y ejecutando el comando:
-npm i
+`npm i`
 
 - La base de datos se encuentra en la carpeta `BD` bajo el nombre `biblioteca_api.sql`.
 
@@ -22,9 +22,11 @@ npm i
 ## 4. Controlador de Libros (`BooksController`)
 - **getOne**: Obtiene un libro por ID, con validaciones para comprobar la existencia del mismo.
 - **getAll**: Devuelve todos los libros de la base de datos.
-- **addBook**: Agrega un nuevo libro, realizando validaciones para asegurar que todos los campos son obligatorios, que el formato de la fecha es correcto y que el ISBN no está duplicado.
+- **addBook**: Agrega un nuevo libro, realizando validaciones para asegurar que todos los campos son obligatorios, que el formato de la fecha es correcto, que el ISBN
+tenga 13 caracteres y que no este duplicado.
 - **deleteByISBN**: Elimina un libro por ISBN, validando que se proporcione un ISBN y que el libro exista.
-- **updateBook**: Actualiza un libro existente, con validaciones para asegurar que todos los campos son obligatorios, que el formato de la fecha es correcto, que el libro existe y que el ISBN no está duplicado.
+- **updateBook**: Actualiza un libro existente, con validaciones para asegurar que todos los campos son obligatorios, que el formato de la fecha es correcto, que el 
+libro exista, que el ISBN tenga 13 caracteres y que no este duplicado.
 
 ## 5. Manejo de Errores
 - Se implementan bloques `try/catch` para manejar errores en las operaciones de base de datos y devolver mensajes de error apropiados.
