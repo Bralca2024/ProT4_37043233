@@ -2,14 +2,10 @@ import { pool } from "./database.js";
 
 class BooksController {
 
-  async getBookById(req, res) {
+  async getOne(req, res) {
     try {
       // Se obtiene el ID del libro desde los parámetros de la URL
       const bookId = req.params.id;
-      // Verifica se si proporcionó un ID
-      if (!bookId) {
-        return res.status(400).json({ message: 'ID del libro es requerido' });
-      }
       // Consulta el libro en la base de datos
       const [result] = await pool.query('SELECT * FROM libros WHERE id = ?', [bookId]);
       // Verifica si se encontró el libro
