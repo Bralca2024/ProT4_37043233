@@ -35,6 +35,10 @@ class BooksController {
       if (!book.titulo || !book.autor || !book.categoria || !book.año_publicacion || !book.isbn) {
         return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
       }
+      // Validación del ISBN: debe tener 13 caracteres
+      if (book.isbn.length !== 13) {
+        return res.status(400).json({ message: 'El ISBN debe tener exactamente 13 caracteres.' });
+      }
       // Se utiliza un regExp para validar el formato de año_publicacion (YYYY-MM-DD)
       const yearPublicationRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -87,11 +91,14 @@ class BooksController {
     try {
       // Se obtiene el ID del libro por los parámetros de la solicitud
       const bookId = req.params.id;
-
       const book = req.body;
       // Validación de campos
       if (!book.titulo || !book.autor || !book.categoria || !book.año_publicacion || !book.isbn) {
         return res.status(400).json({ message: 'Todos los campos son obligatorios.' });
+      }
+      // Validación del ISBN: debe tener 13 caracteres
+      if (book.isbn.length !== 13) {
+        return res.status(400).json({ message: 'El ISBN debe tener exactamente 13 caracteres.' });
       }
       // Se utiliza un regExp para validar el formato de año_publicacion (YYYY-MM-DD)
       const yearPublicationRegex = /^\d{4}-\d{2}-\d{2}$/;
